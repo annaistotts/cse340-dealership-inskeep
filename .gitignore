@@ -1,0 +1,31 @@
+node_modules/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime files
+pids
+*.pid
+*.pid.lock
+
+# Coverage
+coverage/
+
+# Build output
+dist/
+build/
+
+# Optional pnpm local store
+.pnpm-store/
+
+# macOS
+.DS_Store
