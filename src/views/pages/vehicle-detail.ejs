@@ -1,0 +1,63 @@
+<% if (!vehicle) { %>
+	<section class="section-heading section-heading--stacked empty-state">
+		<div>
+			<p class="eyebrow">Not found</p>
+			<h1>We could not find that page.</h1>
+		</div>
+		<p>The vehicle or page you requested is no longer available. Explore the current inventory instead.</p>
+		<a class="button button--primary" href="/vehicles">Back to inventory</a>
+	</section>
+<% } else { %>
+	<section class="detail-hero">
+		<div class="detail-hero__content">
+			<p class="eyebrow"><%= vehicle.tag %></p>
+			<h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
+			<p><%= vehicle.description %></p>
+
+			<dl class="detail-specs">
+				<div>
+					<dt>Price</dt>
+					<dd><%= vehicle.price %></dd>
+				</div>
+				<div>
+					<dt>Mileage</dt>
+					<dd><%= vehicle.mileage %></dd>
+				</div>
+				<div>
+					<dt>Fuel</dt>
+					<dd><%= vehicle.fuel %></dd>
+				</div>
+				<div>
+					<dt>Transmission</dt>
+					<dd><%= vehicle.transmission %></dd>
+				</div>
+			</dl>
+
+			<div class="hero__actions">
+				<a class="button button--primary" href="/login">Reserve a test drive</a>
+				<a class="button button--secondary" href="/vehicles">Back to inventory</a>
+			</div>
+		</div>
+
+		<div class="detail-hero__media <%= vehicle.themeClass %>">
+			<span><%= vehicle.highlight %></span>
+		</div>
+	</section>
+
+	<section class="detail-grid">
+		<article class="detail-card">
+			<h2>Vehicle overview</h2>
+			<p><%= vehicle.description %></p>
+			<p><%= vehicle.overview %></p>
+		</article>
+
+		<article class="detail-card">
+			<h2>Quick highlights</h2>
+			<ul class="feature-list">
+				<% vehicle.features.forEach((feature) => { %>
+					<li><%= feature %></li>
+				<% }) %>
+			</ul>
+		</article>
+	</section>
+<% } %>

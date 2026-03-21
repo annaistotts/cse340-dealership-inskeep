@@ -1,0 +1,78 @@
+<section class="hero">
+	<div class="hero__content">
+		<p class="eyebrow"><%= hero.eyebrow %></p>
+		<h1><%= hero.heading %></h1>
+		<p class="hero__copy"><%= hero.copy %></p>
+
+		<div class="hero__actions">
+			<a class="button button--primary" href="/vehicles">Browse inventory</a>
+			<a class="button button--secondary" href="/login">Sign in</a>
+		</div>
+	</div>
+
+	<aside class="hero__panel">
+		<h2>Why drivers choose us</h2>
+		<ul class="hero__highlights">
+			<% highlights.forEach((highlight) => { %>
+				<li>
+					<strong><%= highlight.title %></strong>
+					<span><%= highlight.copy %></span>
+				</li>
+			<% }) %>
+		</ul>
+	</aside>
+</section>
+
+<section class="stats-grid">
+	<% stats.forEach((stat) => { %>
+		<article class="stat-card">
+			<p class="stat-card__value"><%= stat.value %></p>
+			<p class="stat-card__label"><%= stat.label %></p>
+		</article>
+	<% }) %>
+</section>
+
+<section class="section-heading">
+	<div>
+		<p class="eyebrow">Featured inventory</p>
+		<h2>Popular vehicles available now</h2>
+	</div>
+	<a class="text-link" href="/vehicles">View all vehicles</a>
+</section>
+
+<section class="vehicle-grid">
+	<% featuredVehicles.forEach((vehicle) => { %>
+		<article class="vehicle-card">
+			<div class="vehicle-card__media <%= vehicle.themeClass %>">
+				<span><%= vehicle.year %> <%= vehicle.make %></span>
+			</div>
+
+			<div class="vehicle-card__body">
+				<div class="vehicle-card__meta">
+					<span class="pill"><%= vehicle.tag %></span>
+					<span><%= vehicle.type %></span>
+				</div>
+
+				<h3><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h3>
+				<p><%= vehicle.highlight %></p>
+
+				<dl class="vehicle-card__specs">
+					<div>
+						<dt>Price</dt>
+						<dd><%= vehicle.price %></dd>
+					</div>
+					<div>
+						<dt>Mileage</dt>
+						<dd><%= vehicle.mileage %></dd>
+					</div>
+					<div>
+						<dt>Fuel</dt>
+						<dd><%= vehicle.fuel %></dd>
+					</div>
+				</dl>
+
+				<a class="text-link" href="/vehicles/<%= vehicle.slug %>">See details</a>
+			</div>
+		</article>
+	<% }) %>
+</section>
