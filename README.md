@@ -1,6 +1,8 @@
 # cse340-dealership-inskeep
 Used Car Dealership
 
+I did not write any of the CSS. All of the CSS is AI generated. 
+
 
 Project Description: What your site does and who it is for:
 

@@ -5,37 +5,54 @@ import express from 'express';
 import expressLayouts from 'express-ejs-layouts';
 
 import siteRoutes from './src/routes/siteRoutes.js';
+import { addLocalVariables } from './src/middleware/global.js';
+import { errorHandler, notFoundHandler } from './src/controllers/errors.js';
 
+/**
+ * Server configuration
+ */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-const app = express();
+const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
 
+/**
+ * Setup Express server
+ */
+const app = express();
+
+/**
+ * Configure Express
+ */
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 app.set('layout', 'layouts/layout');
 
 app.use(expressLayouts);
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-    res.locals.currentPath = req.path;
-    res.locals.siteName = 'Driven Dealership';
-    res.locals.currentYear = new Date().getFullYear();
-    next();
-});
+/**
+ * Global middleware
+ */
+app.use(addLocalVariables);
 
+/**
+ * Routes
+ */
 app.use('/', siteRoutes);
 
-app.use((req, res) => {
-    res.status(404).render('pages/vehicle-detail', {
-        title: 'Page Not Found',
-        vehicle: null,
-    });
-});
+/**
+ * Error handling
+ */
+app.use(notFoundHandler);
+app.use(errorHandler);
 
+/**
+ * Start server
+ */
 app.listen(PORT, () => {
+    console.log(`Environment: ${NODE_ENV}`);
     console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
