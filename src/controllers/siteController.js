@@ -79,7 +79,7 @@ function buildHomeViewModel() {
     hero: {
       eyebrow: 'Used cars made easy',
       heading: 'A better place to find your next dependable vehicle.',
-      copy: 'Driven Dealership brings together clean listings, honest information, and a polished shopping experience so the site feels like a real dealership from the first click.',
+      copy: 'Driven Dealership brings together clean listings, honest information, and a polished shopping experience.',
     },
     highlights,
     stats,

@@ -405,6 +405,27 @@ img {
 	font: inherit;
 }
 
+.error-stack {
+	margin: 0;
+	padding: 1rem;
+	background: var(--surface-muted);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	color: var(--text-primary);
+	font-size: 0.9rem;
+	line-height: 1.5;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	overflow-x: auto;
+}
+
+.error-illustration {
+	max-width: min(100%, 420px);
+	border-radius: var(--radius-md);
+	border: 1px solid var(--border);
+	margin: 0.5rem 0;
+}
+
 .site-footer {
 	margin-top: auto;
 	background: var(--background);
