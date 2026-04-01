@@ -4,9 +4,10 @@ import { fileURLToPath } from 'node:url';
 import express from 'express';
 import expressLayouts from 'express-ejs-layouts';
 
-import siteRoutes from './src/routes/siteRoutes.js';
+import routes from './src/routes/index.js';
 import { addLocalVariables } from './src/middleware/global.js';
 import { errorHandler, notFoundHandler } from './src/controllers/errors.js';
+
 
 /**
  * Server configuration
@@ -41,7 +42,7 @@ app.use(addLocalVariables);
 /**
  * Routes
  */
-app.use('/', siteRoutes);
+app.use('/', routes);
 
 /**
  * Error handling
