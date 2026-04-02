@@ -60,7 +60,10 @@ export async function loginUser(req, res, next) {
       role: user.role,
     };
 
-    res.redirect('/');
+    req.session.save((err) => {
+      if (err) return next(err);
+      res.redirect('/');
+    });
   } catch (error) {
     next(error);
   }

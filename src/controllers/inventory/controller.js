@@ -1,4 +1,5 @@
 import inventoryModel from '../../models/inventory/model.js';
+import reviewModel from '../../models/reviews/model.js';
 
 const stats = [
   { value: '150+', label: 'Vehicles inspected and ready' },
@@ -64,12 +65,16 @@ export async function buildVehicleDetail(req, res, next) {
       return res.status(404).render('inventory/detail', {
         title: 'Vehicle Not Found',
         vehicle: null,
+        reviews: [],
       });
     }
+
+    const reviews = await reviewModel.getReviewsByVehicleId(vehicle.vehicle_id);
 
     return res.render('inventory/detail', {
       title: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
       vehicle,
+      reviews,
     });
   } catch (error) {
     next(error);

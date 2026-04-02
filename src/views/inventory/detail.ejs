@@ -10,22 +10,22 @@
 <% } else { %>
 	<section class="detail-hero">
 		<div class="detail-hero__content">
-			<p class="eyebrow"><%= vehicle.tag %></p>
+			<p class="eyebrow"><%= vehicle.availability %></p>
 			<h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
 			<p><%= vehicle.description %></p>
 
 			<dl class="detail-specs">
 				<div>
 					<dt>Price</dt>
-					<dd><%= vehicle.price %></dd>
+					<dd>$<%= Number(vehicle.price).toLocaleString() %></dd>
 				</div>
 				<div>
 					<dt>Mileage</dt>
-					<dd><%= vehicle.mileage %></dd>
+					<dd><%= Number(vehicle.mileage).toLocaleString() %> miles</dd>
 				</div>
 				<div>
 					<dt>Fuel</dt>
-					<dd><%= vehicle.fuel %></dd>
+					<dd><%= vehicle.fuel_type %></dd>
 				</div>
 				<div>
 					<dt>Transmission</dt>
@@ -39,8 +39,12 @@
 			</div>
 		</div>
 
-		<div class="detail-hero__media <%= vehicle.themeClass %>">
-			<span><%= vehicle.highlight %></span>
+		<div class="detail-hero__media">
+			<% if (vehicle.image_path) { %>
+				<img src="<%= vehicle.image_path %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>">
+			<% } else { %>
+				<span>Vehicle image coming soon</span>
+			<% } %>
 		</div>
 	</section>
 
@@ -48,16 +52,69 @@
 		<article class="detail-card">
 			<h2>Vehicle overview</h2>
 			<p><%= vehicle.description %></p>
-			<p><%= vehicle.overview %></p>
 		</article>
 
 		<article class="detail-card">
 			<h2>Quick highlights</h2>
 			<ul class="feature-list">
-				<% vehicle.features.forEach((feature) => { %>
-					<li><%= feature %></li>
-				<% }) %>
+				<li><strong>Transmission:</strong> <%= vehicle.transmission %></li>
+				<li><strong>Fuel Type:</strong> <%= vehicle.fuel_type %></li>
+				<li><strong>Mileage:</strong> <%= Number(vehicle.mileage).toLocaleString() %> miles</li>
+				<li><strong>Status:</strong> <%= vehicle.availability %></li>
 			</ul>
 		</article>
+	</section>
+
+	<section class="vehicle-reviews">
+		<h2>Customer Reviews</h2>
+
+		<% if (reviews && reviews.length > 0) { %>
+			<div class="review-list">
+				<% reviews.forEach(review => { %>
+					<article class="review-card">
+						<h3><%= review.first_name %> <%= review.last_name %></h3>
+						<p>Rating: <%= review.rating %>/5</p>
+						<p><%= review.review_text %></p>
+
+						<% if (currentUser && currentUser.user_id === review.user_id) { %>
+							<a href="/vehicles/<%= vehicle.slug %>/reviews/<%= review.review_id %>/edit">Edit</a>
+
+							<form action="/vehicles/<%= vehicle.slug %>/reviews/<%= review.review_id %>/delete" method="post">
+								<button type="submit">Delete</button>
+							</form>
+						<% } %>
+					</article>
+				<% }) %>
+			</div>
+		<% } else { %>
+			<p>No reviews yet.</p>
+		<% } %>
+
+		<% if (currentUser) { %>
+			<form action="/vehicles/<%= vehicle.slug %>/reviews" method="post" class="review-form">
+				<input type="hidden" name="vehicle_id" value="<%= vehicle.vehicle_id %>">
+
+				<div>
+					<label for="rating">Rating</label>
+					<select name="rating" id="rating" required>
+						<option value="">Select rating</option>
+						<option value="5">5</option>
+						<option value="4">4</option>
+						<option value="3">3</option>
+						<option value="2">2</option>
+						<option value="1">1</option>
+					</select>
+				</div>
+
+				<div>
+					<label for="review_text">Your Review</label>
+					<textarea name="review_text" id="review_text" rows="5" required></textarea>
+				</div>
+
+				<button type="submit">Leave Review</button>
+			</form>
+		<% } else { %>
+			<p><a href="/login">Sign in</a> to leave a review.</p>
+		<% } %>
 	</section>
 <% } %>

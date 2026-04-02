@@ -38,11 +38,6 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
- * Global middleware
- */
-app.use(addLocalVariables);
-
-/**
  * Session management
  */
 const PgSession = pgSession(session);
@@ -62,6 +57,11 @@ app.use(
     },
   })
 );
+
+/**
+ * Global middleware
+ */
+app.use(addLocalVariables);
 
 /**
  * Routes
