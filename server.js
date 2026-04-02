@@ -3,7 +3,10 @@ import { fileURLToPath } from 'node:url';
 
 import express from 'express';
 import expressLayouts from 'express-ejs-layouts';
+import session from 'express-session';
+import pgSession from 'connect-pg-simple';
 
+import db from './src/models/db.js';
 import routes from './src/routes/index.js';
 import { addLocalVariables } from './src/middleware/global.js';
 import { errorHandler, notFoundHandler } from './src/controllers/errors.js';
@@ -38,6 +41,27 @@ app.use(express.static(path.join(__dirname, 'public')));
  * Global middleware
  */
 app.use(addLocalVariables);
+
+/**
+ * Session management
+ */
+const PgSession = pgSession(session);
+
+app.use(
+  session({
+    store: new PgSession({
+      pool: db,
+      tableName: 'session',
+    }),
+    secret: 'supersecret', // later move to .env
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60, // 1 hour
+    },
+  })
+);
 
 /**
  * Routes

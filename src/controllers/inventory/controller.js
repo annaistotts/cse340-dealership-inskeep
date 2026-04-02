@@ -35,31 +35,43 @@ function buildHomeViewModel(featuredVehicles) {
   };
 }
 
-export async function buildHome(req, res) {
-  const vehicles = await inventoryModel.getAllVehicles();
-  res.render('inventory/home', buildHomeViewModel(vehicles));
-}
-
-export async function buildInventory(req, res) {
-  const vehicles = await inventoryModel.getAllVehicles();
-  res.render('inventory/list', {
-    title: 'Inventory',
-    vehicles,
-  });
-}
-
-export async function buildVehicleDetail(req, res) {
-  const vehicle = await inventoryModel.getVehicleBySlug(req.params.slug);
-
-  if (!vehicle) {
-    return res.status(404).render('inventory/detail', {
-      title: 'Vehicle Not Found',
-      vehicle: null,
-    });
+export async function buildHome(req, res, next) {
+  try {
+    const featuredVehicles = await inventoryModel.getFeaturedVehicles();
+    res.render('inventory/home', buildHomeViewModel(featuredVehicles));
+  } catch (error) {
+    next(error);
   }
+}
 
-  return res.render('inventory/detail', {
-    title: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
-    vehicle,
-  });
+export async function buildInventory(req, res, next) {
+  try {
+    const vehicles = await inventoryModel.getAllVehicles();
+    res.render('inventory/list', {
+      title: 'Inventory',
+      vehicles,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function buildVehicleDetail(req, res, next) {
+  try {
+    const vehicle = await inventoryModel.getVehicleBySlug(req.params.slug);
+
+    if (!vehicle) {
+      return res.status(404).render('inventory/detail', {
+        title: 'Vehicle Not Found',
+        vehicle: null,
+      });
+    }
+
+    return res.render('inventory/detail', {
+      title: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+      vehicle,
+    });
+  } catch (error) {
+    next(error);
+  }
 }

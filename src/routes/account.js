@@ -3,11 +3,22 @@ import { Router } from 'express';
 import {
 	buildLogin,
 	buildRegister,
+	loginUser,
+	registerUser,
 } from '../controllers/account/controller.js';
 
 const router = Router();
 
 router.get('/login', buildLogin);
 router.get('/register', buildRegister);
+
+router.post('/login', loginUser);
+router.post('/register', registerUser);
+
+router.get('/logout', (req, res) => {
+	req.session.destroy(() => {
+		res.redirect('/');
+	});
+});
 
 export default router;
