@@ -8,7 +8,11 @@
     <nav class="site-nav" aria-label="Primary">
       <a class="<%= currentPath === '/' ? 'is-active' : '' %>" href="/">Home</a>
       <a class="<%= currentPath.startsWith('/vehicles') ? 'is-active' : '' %>" href="/vehicles">Inventory</a>
-      <a class="<%= currentPath === '/login' ? 'is-active' : '' %>" href="/login">Sign in</a>
+      <% if (currentUser) { %>
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a class="<%= currentPath === '/login' ? 'is-active' : '' %>" href="/login">Sign in</a>
+      <% } %>
     </nav>
   </header>
 </div>
