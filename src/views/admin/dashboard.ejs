@@ -39,7 +39,7 @@
   <article class="detail-card">
     <h2>Manage Vehicles</h2>
     <p>Edit vehicle price, description, and availability.</p>
-    <a class="button button--primary" href="/owner/vehicles">Open Vehicle Manager</a>
+    <a class="button button--primary" href="<%= isOwner ? '/owner/vehicles' : '/admin/vehicles' %>">Open Vehicle Manager</a>
   </article>
 
   <article class="detail-card">
