@@ -6,13 +6,49 @@
 	<p>Browse a curated lineup of quality used vehicles with transparent pricing and dependable features.</p>
 </section>
 
+<% 
+  let queryParams = [];
+  if (selectedSort && selectedSort !== 'newest') queryParams.push(`sort=${selectedSort}`);
+  if (selectedStatus) queryParams.push(`status=${selectedStatus}`);
+  const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+%>
+
 <nav class="category-nav">
-	<a href="/vehicles">All</a>
-	<a href="/vehicles/category/1">Trucks</a>
-	<a href="/vehicles/category/2">Vans</a>
-	<a href="/vehicles/category/3">Cars</a>
-	<a href="/vehicles/category/4">SUVs</a>
+	<a href="/vehicles<%= queryString %>">All</a>
+	<a href="/vehicles/category/1<%= queryString %>">Trucks</a>
+	<a href="/vehicles/category/2<%= queryString %>">Vans</a>
+	<a href="/vehicles/category/3<%= queryString %>">Cars</a>
+	<a href="/vehicles/category/4<%= queryString %>">SUVs</a>
 </nav>
+
+<div class="inventory-filters">
+	<form class="inventory-sort" method="get" action="">
+		<% if (selectedStatus) { %>
+			<input type="hidden" name="status" value="<%= selectedStatus %>">
+		<% } %>
+		<label for="sort">Sort by</label>
+		<select id="sort" name="sort" onchange="this.form.submit()">
+			<option value="newest" <%= selectedSort === 'newest' ? 'selected' : '' %>>Newest year</option>
+			<option value="year_asc" <%= selectedSort === 'year_asc' ? 'selected' : '' %>>Oldest year</option>
+			<option value="mileage_desc" <%= selectedSort === 'mileage_desc' ? 'selected' : '' %>>Highest mileage</option>
+			<option value="mileage_asc" <%= selectedSort === 'mileage_asc' ? 'selected' : '' %>>Lowest mileage</option>
+			<option value="price_desc" <%= selectedSort === 'price_desc' ? 'selected' : '' %>>Highest price</option>
+			<option value="price_asc" <%= selectedSort === 'price_asc' ? 'selected' : '' %>>Lowest price</option>
+		</select>
+	</form>
+	<form class="inventory-status" method="get" action="">
+		<% if (selectedSort && selectedSort !== 'newest') { %>
+			<input type="hidden" name="sort" value="<%= selectedSort %>">
+		<% } %>
+		<label for="status">Status</label>
+		<select id="status" name="status" onchange="this.form.submit()">
+			<option value="">All statuses</option>
+			<option value="available" <%= selectedStatus === 'available' ? 'selected' : '' %>>Available</option>
+			<option value="pending" <%= selectedStatus === 'pending' ? 'selected' : '' %>>Pending</option>
+			<option value="sold" <%= selectedStatus === 'sold' ? 'selected' : '' %>>Sold</option>
+		</select>
+	</form>
+</div>
 
 <section class="vehicle-grid">
 	<% vehicles.forEach((vehicle) => { %>

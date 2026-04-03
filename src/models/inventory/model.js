@@ -1,5 +1,30 @@
 import db from "../db.js";
 
+const sortMap = {
+  newest: 'v.year DESC, v.vehicle_id DESC',
+  oldest: 'v.year ASC, v.vehicle_id ASC',
+  price_desc: 'v.price DESC, v.vehicle_id DESC',
+  price_asc: 'v.price ASC, v.vehicle_id ASC',
+  mileage_desc: 'v.mileage DESC, v.vehicle_id DESC',
+  mileage_asc: 'v.mileage ASC, v.vehicle_id ASC',
+  year_desc: 'v.year DESC, v.vehicle_id DESC',
+  year_asc: 'v.year ASC, v.vehicle_id ASC',
+};
+
+const statusMap = {
+  available: 'available',
+  pending: 'pending',
+  sold: 'sold',
+};
+
+function getSortOrder(sortBy) {
+  return sortMap[sortBy] || sortMap.newest;
+}
+
+function getStatusFilter(status) {
+  return statusMap[status] || null;
+}
+
 async function getFeaturedVehicles() {
   try {
     const sql = `
@@ -19,17 +44,22 @@ async function getFeaturedVehicles() {
   }
 }
 
-async function getAllVehicles() {
+async function getAllVehicles(sortBy = 'newest', status = null) {
   try {
-    const sql = `
+    const orderBy = getSortOrder(sortBy);
+    const statusFilter = getStatusFilter(status);
+    let sql = `
       SELECT v.*, i.image_path
       FROM vehicles v
       LEFT JOIN vehicle_images i
         ON v.vehicle_id = i.vehicle_id
         AND i.is_primary = true
-      ORDER BY v.vehicle_id;
     `;
-    const result = await db.query(sql);
+    if (statusFilter) {
+      sql += ` WHERE v.availability = $1`;
+    }
+    sql += ` ORDER BY ${orderBy};`;
+    const result = statusFilter ? await db.query(sql, [statusFilter]) : await db.query(sql);
     return result.rows;
   } catch (error) {
     console.error("getAllVehicles error:", error);
@@ -94,8 +124,10 @@ async function getAllCategories() {
   return result.rows;
 }
 
-async function getVehiclesByCategoryId(categoryId) {
-  const sql = `
+async function getVehiclesByCategoryId(categoryId, sortBy = 'newest', status = null) {
+  const orderBy = getSortOrder(sortBy);
+  const statusFilter = getStatusFilter(status);
+  let sql = `
     SELECT v.*, i.image_path, c.category_name
     FROM vehicles v
     JOIN categories c ON v.category_id = c.category_id
@@ -103,10 +135,13 @@ async function getVehiclesByCategoryId(categoryId) {
       ON v.vehicle_id = i.vehicle_id
       AND i.is_primary = true
     WHERE v.category_id = $1
-    ORDER BY v.vehicle_id;
   `;
+  if (statusFilter) {
+    sql += ` AND v.availability = $2`;
+  }
+  sql += ` ORDER BY ${orderBy};`;
 
-  const result = await db.query(sql, [categoryId]);
+  const result = statusFilter ? await db.query(sql, [categoryId, statusFilter]) : await db.query(sql, [categoryId]);
   return result.rows;
 }
 

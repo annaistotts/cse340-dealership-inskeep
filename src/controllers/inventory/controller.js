@@ -1,11 +1,32 @@
 import inventoryModel from '../../models/inventory/model.js';
 import reviewModel from '../../models/reviews/model.js';
 
-const stats = [
-  { value: '150+', label: 'Vehicles inspected and ready' },
-  { value: '4.9/5', label: 'Average customer satisfaction' },
-  { value: '48 hrs', label: 'Fast turnaround on approvals' },
-];
+const allowedSorts = new Set([
+  'newest',
+  'oldest',
+  'price_desc',
+  'price_asc',
+  'mileage_desc',
+  'mileage_asc',
+  'year_desc',
+  'year_asc',
+]);
+
+const allowedStatuses = new Set([
+  'available',
+  'pending',
+  'sold',
+]);
+
+function getSelectedSort(sort) {
+  if (allowedSorts.has(sort)) return sort;
+  return 'newest';
+}
+
+function getSelectedStatus(status) {
+  if (status && allowedStatuses.has(status)) return status;
+  return null;
+}
 
 const highlights = [
   {
@@ -31,7 +52,6 @@ function buildHomeViewModel(featuredVehicles) {
       copy: 'Driven Dealership brings together clean listings, honest information, and a polished shopping experience.',
     },
     highlights,
-    stats,
     featuredVehicles,
   };
 }
@@ -47,11 +67,15 @@ export async function buildHome(req, res, next) {
 
 export async function buildInventory(req, res, next) {
   try {
-    const vehicles = await inventoryModel.getAllVehicles();
+    const selectedSort = getSelectedSort(req.query.sort);
+    const selectedStatus = getSelectedStatus(req.query.status);
+    const vehicles = await inventoryModel.getAllVehicles(selectedSort, selectedStatus);
     res.render('inventory/list', {
       title: 'Inventory',
       vehicles,
       categoryName: 'All Vehicles',
+      selectedSort,
+      selectedStatus,
     });
   } catch (error) {
     next(error);
@@ -85,6 +109,8 @@ export async function buildVehicleDetail(req, res, next) {
 export async function buildCategoryView(req, res, next) {
   try {
     const categoryId = req.params.categoryId;
+    const selectedSort = getSelectedSort(req.query.sort);
+    const selectedStatus = getSelectedStatus(req.query.status);
     const category = await inventoryModel.getCategoryById(categoryId);
 
     if (!category) {
@@ -92,15 +118,19 @@ export async function buildCategoryView(req, res, next) {
         title: 'Category Not Found',
         vehicles: [],
         categoryName: null,
+        selectedSort,
+        selectedStatus,
       });
     }
 
-    const vehicles = await inventoryModel.getVehiclesByCategoryId(categoryId);
+    const vehicles = await inventoryModel.getVehiclesByCategoryId(categoryId, selectedSort, selectedStatus);
 
     res.render('inventory/list', {
       title: category.category_name,
       vehicles,
       categoryName: category.category_name,
+      selectedSort,
+      selectedStatus,
     });
   } catch (error) {
     next(error);
