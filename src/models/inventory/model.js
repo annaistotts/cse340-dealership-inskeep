@@ -56,7 +56,7 @@ async function getAllVehicles(sortBy = 'newest', status = null) {
         AND i.is_primary = true
     `;
     if (statusFilter) {
-      sql += ` WHERE v.availability = $1`;
+      sql += ` WHERE LOWER(v.availability) = $1`;
     }
     sql += ` ORDER BY ${orderBy};`;
     const result = statusFilter ? await db.query(sql, [statusFilter]) : await db.query(sql);
@@ -137,7 +137,7 @@ async function getVehiclesByCategoryId(categoryId, sortBy = 'newest', status = n
     WHERE v.category_id = $1
   `;
   if (statusFilter) {
-    sql += ` AND v.availability = $2`;
+    sql += ` AND LOWER(v.availability) = $2`;
   }
   sql += ` ORDER BY ${orderBy};`;
 

@@ -14,9 +14,9 @@
     <div>
       <label for="availability">Availability</label>
       <select id="availability" name="availability" required>
-        <option value="Available" <%= vehicle.availability?.toLowerCase() === 'available' ? 'selected' : '' %>>Available</option>
-        <option value="Pending" <%= vehicle.availability?.toLowerCase() === 'pending' ? 'selected' : '' %>>Pending</option>
-        <option value="Sold" <%= vehicle.availability?.toLowerCase() === 'sold' ? 'selected' : '' %>>Sold</option>
+        <option value="available" <%= vehicle.availability?.toLowerCase() === 'available' ? 'selected' : '' %>>Available</option>
+        <option value="pending" <%= vehicle.availability?.toLowerCase() === 'pending' ? 'selected' : '' %>>Pending</option>
+        <option value="sold" <%= vehicle.availability?.toLowerCase() === 'sold' ? 'selected' : '' %>>Sold</option>
       </select>
     </div>
 
