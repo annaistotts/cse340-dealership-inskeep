@@ -1,0 +1,19 @@
+<section class="section-heading">
+  <h1>Contact Submissions</h1>
+</section>
+
+<% if (!messages.length) { %>
+  <p>No contact submissions yet.</p>
+<% } else { %>
+  <div class="review-list">
+    <% messages.forEach(message => { %>
+      <article class="review-card">
+        <h3><%= message.name %></h3>
+        <p><strong>Email:</strong> <%= message.email %></p>
+        <p><strong>Subject:</strong> <%= message.subject || 'No subject' %></p>
+        <p><strong>Message:</strong> <%= message.message %></p>
+        <p><strong>Submitted:</strong> <%= new Date(message.created_at).toLocaleString() %></p>
+      </article>
+    <% }) %>
+  </div>
+<% } %>

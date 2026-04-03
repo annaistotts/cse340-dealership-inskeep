@@ -1,6 +1,7 @@
 import serviceModel from '../../models/service/model.js';
 import inventoryModel from '../../models/inventory/model.js';
 import reviewModel from '../../models/reviews/model.js';
+import contactModel from '../../models/contact/model.js';
 
 export function buildAdminDashboard(req, res) {
   res.render('admin/dashboard', {
@@ -118,6 +119,19 @@ export async function updateServiceRequest(req, res, next) {
     });
 
     res.redirect(`/admin/service/${req.params.requestId}`);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function buildContactDashboard(req, res, next) {
+  try {
+    const messages = await contactModel.getAllContactMessages();
+
+    res.render('admin/contact-list', {
+      title: 'Contact Submissions',
+      messages,
+    });
   } catch (error) {
     next(error);
   }

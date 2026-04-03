@@ -10,6 +10,7 @@ import {
   buildServiceDashboard,
   buildServiceDetail,
   updateServiceRequest,
+  buildContactDashboard,
 } from '../controllers/admin/controller.js';
 
 const router = Router();
@@ -26,5 +27,6 @@ router.post('/admin/reviews/:reviewId/delete', requireEmployee, deleteReviewMode
 router.get('/admin/service', requireEmployee, buildServiceDashboard);
 router.get('/admin/service/:requestId', requireEmployee, buildServiceDetail);
 router.post('/admin/service/:requestId', requireEmployee, updateServiceRequest);
+router.get('/admin/contact', requireEmployee, buildContactDashboard);
 
 export default router;
