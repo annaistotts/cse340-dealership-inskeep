@@ -4,6 +4,7 @@ import accountRoutes from './account.js';
 import reviewRoutes from './reviews.js';
 import serviceRoutes from './service.js';
 import adminRoutes from './admin.js';
+import contactRoutes from './contact.js';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use('/', accountRoutes);
 router.use('/', reviewRoutes);
 router.use('/', serviceRoutes);
 router.use('/', adminRoutes);
+router.use('/', contactRoutes);
 
 export default router;

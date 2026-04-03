@@ -51,6 +51,7 @@ export async function buildInventory(req, res, next) {
     res.render('inventory/list', {
       title: 'Inventory',
       vehicles,
+      categoryName: 'All Vehicles',
     });
   } catch (error) {
     next(error);
@@ -75,6 +76,31 @@ export async function buildVehicleDetail(req, res, next) {
       title: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
       vehicle,
       reviews,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function buildCategoryView(req, res, next) {
+  try {
+    const categoryId = req.params.categoryId;
+    const category = await inventoryModel.getCategoryById(categoryId);
+
+    if (!category) {
+      return res.status(404).render('inventory/list', {
+        title: 'Category Not Found',
+        vehicles: [],
+        categoryName: null,
+      });
+    }
+
+    const vehicles = await inventoryModel.getVehiclesByCategoryId(categoryId);
+
+    res.render('inventory/list', {
+      title: category.category_name,
+      vehicles,
+      categoryName: category.category_name,
     });
   } catch (error) {
     next(error);
