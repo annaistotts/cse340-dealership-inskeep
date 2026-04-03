@@ -57,7 +57,7 @@ export async function loginUser(req, res, next) {
     req.session.user = {
       user_id: user.user_id,
       email: user.email,
-      role: user.role,
+      role: String(user.role ?? '').trim().toLowerCase(),
     };
 
     req.session.save((err) => {

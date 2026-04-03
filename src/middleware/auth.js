@@ -6,12 +6,18 @@ export function requireLogin(req, res, next) {
   next();
 }
 
+function normalizeRole(role) {
+  return String(role ?? '').trim().toLowerCase();
+}
+
 export function requireEmployee(req, res, next) {
   if (!req.session.user) {
     return res.redirect('/login');
   }
 
-  if (req.session.user.role !== 'employee' && req.session.user.role !== 'owner') {
+  const role = normalizeRole(req.session.user.role);
+
+  if (!['employee', 'owner', 'admin'].includes(role)) {
     return res.status(403).send('Access denied');
   }
 
@@ -23,7 +29,9 @@ export function requireOwner(req, res, next) {
     return res.redirect('/login');
   }
 
-  if (req.session.user.role !== 'owner') {
+  const role = normalizeRole(req.session.user.role);
+
+  if (!['owner', 'admin'].includes(role)) {
     return res.status(403).send('Access denied');
   }
 
