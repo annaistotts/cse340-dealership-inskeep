@@ -53,3 +53,4 @@ Email: owner@demo.com
 # Known Limitations: 
 - Employees do not fully manage vehicle inventory (handled by owner role)
 - Image uploads are not dynamic (images are stored locally and referenced by path)
+- Contact submissions have a button to respond in owner view but responding doesn't work (didn't get that far)
