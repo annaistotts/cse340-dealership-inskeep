@@ -1,0 +1,25 @@
+<section class="section-heading service-history-heading">
+  <h1>My Service Requests</h1>
+</section>
+
+<% if (!requests.length) { %>
+  <p>No service requests yet.</p>
+<% } else { %>
+  <div class="review-list">
+    <% requests.forEach(request => { %>
+      <article class="review-card">
+        <h3><%= request.vehicle_year %> <%= request.vehicle_make %> <%= request.vehicle_model %></h3>
+        <% if (request.created_at) { %>
+          <p><strong>Requested:</strong> <%= new Date(request.created_at).toLocaleDateString() %></p>
+        <% } %>
+        <p><strong>Service:</strong> <%= request.service_type %></p>
+        <p><strong>Status:</strong> <%= request.status %></p>
+        <p><strong>Description:</strong> <%= request.request_description %></p>
+
+        <% if (request.employee_notes) { %>
+          <p><strong>Notes:</strong> <%= request.employee_notes %></p>
+        <% } %>
+      </article>
+    <% }) %>
+  </div>
+<% } %>

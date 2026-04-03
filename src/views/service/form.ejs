@@ -1,0 +1,40 @@
+<section class="auth-page">
+  <h1>Request Service</h1>
+
+  <form action="/service" method="post" class="auth-form">
+    <div>
+      <label for="vehicle_year">Vehicle Year</label>
+      <input type="text" id="vehicle_year" name="vehicle_year" inputmode="numeric" required>
+    </div>
+
+    <div>
+      <label for="vehicle_make">Make</label>
+      <input type="text" id="vehicle_make" name="vehicle_make" required>
+    </div>
+
+    <div>
+      <label for="vehicle_model">Model</label>
+      <input type="text" id="vehicle_model" name="vehicle_model" required>
+    </div>
+
+    <div>
+      <label for="service_type">Service Type</label>
+      <select id="service_type" name="service_type" required>
+        <option value="">Select a service</option>
+        <option value="Oil Change">Oil Change</option>
+        <option value="Inspection">Inspection</option>
+        <option value="Tire Rotation">Tire Rotation</option>
+        <option value="Brake Check">Brake Check</option>
+        <option value="Battery Service">Battery Service</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="request_description">Description</label>
+      <textarea id="request_description" name="request_description" rows="5"></textarea>
+    </div>
+
+    <button type="submit">Submit Request</button>
+  </form>
+</section>
