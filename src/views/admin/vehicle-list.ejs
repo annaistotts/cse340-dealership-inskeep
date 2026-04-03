@@ -1,6 +1,8 @@
 <section class="section-heading admin-service-heading">
   <h1>Manage Vehicles</h1>
-  <a class="button button--primary" href="/owner/vehicles/add">Add Vehicle</a>
+  <% if (currentUser && currentUser.role === 'owner') { %>
+    <a class="button button--primary" href="/owner/vehicles/add">Add Vehicle</a>
+  <% } %>
 </section>
 
 <% if (!vehicles.length) { %>
@@ -28,17 +30,19 @@
         <div class="hero__actions">
           <a
             class="review-action-button"
-            href="/owner/vehicles/<%= vehicle.vehicle_id %>/edit"
+            href="<%= currentUser && currentUser.role === 'owner' ? `/owner/vehicles/${vehicle.vehicle_id}/edit` : `/admin/vehicles/${vehicle.vehicle_id}/edit` %>"
           >
             Edit
           </a>
 
-          <form
-            action="/owner/vehicles/<%= vehicle.vehicle_id %>/delete"
-            method="post"
-          >
-            <button type="submit">Delete</button>
-          </form>
+          <% if (currentUser && currentUser.role === 'owner') { %>
+            <form
+              action="/owner/vehicles/<%= vehicle.vehicle_id %>/delete"
+              method="post"
+            >
+              <button type="submit">Delete</button>
+            </form>
+          <% } %>
         </div>
       </article>
     <% }) %>
