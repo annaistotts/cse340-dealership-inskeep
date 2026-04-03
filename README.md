@@ -17,7 +17,7 @@ My site is built for a used car dealership. It allows customers to browse vehicl
 
 
 # User Roles: 
-### Standard User
+### Customer
 - Register and log in
 - Browse vehicles and categories
 - View vehicle details
@@ -32,7 +32,7 @@ My site is built for a used car dealership. It allows customers to browse vehicl
 - Add notes to service requests
 - View contact form submissions
 
-### Owner (Admin)
+### Owner
 - All employee permissions
 - Add, edit, and delete vehicle categories
 - Add, edit, and delete vehicles

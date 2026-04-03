@@ -14,6 +14,8 @@ export function buildAdminDashboard(req, res) {
   res.render('admin/dashboard', {
     title: 'Employee Dashboard',
     isOwner,
+    counts: null,
+    users: [],
   });
 }
 
