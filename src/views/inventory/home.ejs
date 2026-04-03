@@ -6,7 +6,11 @@
 
 		<div class="hero__actions">
 			<a class="button button--primary" href="/vehicles">Browse inventory</a>
-			<a class="button button--secondary" href="/login">Sign in</a>
+			<% if (currentUser) { %>
+				<a class="button button--secondary" href="/logout">Logout</a>
+			<% } else { %>
+				<a class="button button--secondary" href="/login">Sign in</a>
+			<% } %>
 		</div>
 	</div>
 
@@ -43,7 +47,12 @@
 <section class="vehicle-grid">
 	<% featuredVehicles.forEach((vehicle) => { %>
 		<article class="vehicle-card">
-			<div class="vehicle-card__media <%= vehicle.themeClass %>">
+			<div
+				class="vehicle-card__media <%= vehicle.image_path ? '' : vehicle.themeClass %>"
+				<% if (vehicle.image_path) { %>
+					style="background-image: linear-gradient(rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.55)), url('<%= vehicle.image_path %>'); background-size: cover; background-position: center;"
+				<% } %>
+			>
 				<span><%= vehicle.year %> <%= vehicle.make %></span>
 			</div>
 
@@ -59,7 +68,7 @@
 				<dl class="vehicle-card__specs">
 					<div>
 						<dt>Price</dt>
-						<dd><%= vehicle.price %></dd>
+						<dd>$<%= Number(vehicle.price).toLocaleString() %></dd>
 					</div>
 					<div>
 						<dt>Mileage</dt>
@@ -67,7 +76,7 @@
 					</div>
 					<div>
 						<dt>Fuel</dt>
-						<dd><%= vehicle.fuel %></dd>
+						<dd><%= vehicle.fuel_type %></dd>
 					</div>
 				</dl>
 
