@@ -7,8 +7,12 @@ import adminModel from '../../models/admin/model.js';
 export function buildAdminDashboard(req, res) {
   const isOwner = req.session?.user?.role === 'owner';
 
+  if (isOwner) {
+    return res.redirect('/owner');
+  }
+
   res.render('admin/dashboard', {
-    title: isOwner ? 'Owner Dashboard' : 'Employee Dashboard',
+    title: 'Employee Dashboard',
     isOwner,
   });
 }
