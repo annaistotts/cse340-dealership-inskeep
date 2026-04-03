@@ -2,6 +2,7 @@ import serviceModel from '../../models/service/model.js';
 import inventoryModel from '../../models/inventory/model.js';
 import reviewModel from '../../models/reviews/model.js';
 import contactModel from '../../models/contact/model.js';
+import adminModel from '../../models/admin/model.js';
 
 export function buildAdminDashboard(req, res) {
   const isOwner = req.session?.user?.role === 'owner';
@@ -10,6 +11,162 @@ export function buildAdminDashboard(req, res) {
     title: isOwner ? 'Owner Dashboard' : 'Employee Dashboard',
     isOwner,
   });
+}
+
+export async function buildOwnerDashboard(req, res, next) {
+  try {
+    const counts = await adminModel.getDashboardCounts();
+    const users = await adminModel.getAllUsers();
+
+    res.render('admin/dashboard', {
+      title: 'Owner Dashboard',
+      counts,
+      users,
+      isOwner: req.session.user.role === 'owner',
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+function makeSlug(year, make, model) {
+  return `${year}-${make}-${model}`
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
+export async function buildVehicleDashboard(req, res, next) {
+  try {
+    const vehicles = await inventoryModel.getAllVehicles();
+
+    res.render('admin/vehicle-list', {
+      title: 'Manage Vehicles',
+      vehicles,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function buildAddVehicle(req, res, next) {
+  try {
+    const categories = await inventoryModel.getAllCategories();
+
+    res.render('admin/vehicle-form', {
+      title: 'Add Vehicle',
+      vehicle: null,
+      categories,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function addVehicle(req, res, next) {
+  try {
+    const {
+      category_id,
+      year,
+      make,
+      model,
+      price,
+      mileage,
+      transmission,
+      fuel_type,
+      description,
+      availability,
+      featured,
+    } = req.body;
+
+    const slug = makeSlug(year, make, model);
+
+    await inventoryModel.createVehicle({
+      category_id,
+      year,
+      make,
+      model,
+      slug,
+      price,
+      mileage,
+      transmission,
+      fuel_type,
+      description,
+      availability,
+      featured: featured === 'true',
+    });
+
+    res.redirect('/owner/vehicles');
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function buildEditVehicle(req, res, next) {
+  try {
+    const vehicle = await inventoryModel.getVehicleById(req.params.vehicleId);
+    const categories = await inventoryModel.getAllCategories();
+
+    if (!vehicle) {
+      return res.status(404).send('Vehicle not found');
+    }
+
+    res.render('admin/vehicle-form', {
+      title: 'Edit Vehicle',
+      vehicle,
+      categories,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function editVehicle(req, res, next) {
+  try {
+    const {
+      category_id,
+      year,
+      make,
+      model,
+      price,
+      mileage,
+      transmission,
+      fuel_type,
+      description,
+      availability,
+      featured,
+    } = req.body;
+
+    const slug = makeSlug(year, make, model);
+
+    await inventoryModel.updateVehicle(req.params.vehicleId, {
+      category_id,
+      year,
+      make,
+      model,
+      slug,
+      price,
+      mileage,
+      transmission,
+      fuel_type,
+      description,
+      availability,
+      featured: featured === 'true',
+    });
+
+    res.redirect('/owner/vehicles');
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function removeVehicle(req, res, next) {
+  try {
+    await inventoryModel.deleteVehicle(req.params.vehicleId);
+    res.redirect('/owner/vehicles');
+  } catch (error) {
+    next(error);
+  }
 }
 
 export async function buildVehicleManagement(req, res, next) {

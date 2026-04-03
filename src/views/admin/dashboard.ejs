@@ -6,11 +6,40 @@
   <p>Quick access to <%= isOwner ? 'owner and employee' : 'employee' %> tools.</p>
 </section>
 
+<% if (counts) { %>
+<section class="detail-grid">
+  <article class="detail-card">
+    <h2>Total Users</h2>
+    <p><%= counts.user_count %></p>
+  </article>
+
+  <article class="detail-card">
+    <h2>Total Vehicles</h2>
+    <p><%= counts.vehicle_count %></p>
+  </article>
+
+  <article class="detail-card">
+    <h2>Total Reviews</h2>
+    <p><%= counts.review_count %></p>
+  </article>
+
+  <article class="detail-card">
+    <h2>Service Requests</h2>
+    <p><%= counts.service_request_count %></p>
+  </article>
+
+  <article class="detail-card">
+    <h2>Contact Messages</h2>
+    <p><%= counts.contact_message_count %></p>
+  </article>
+</section>
+<% } %>
+
 <section class="detail-grid">
   <article class="detail-card">
     <h2>Manage Vehicles</h2>
     <p>Edit vehicle price, description, and availability.</p>
-    <a class="button button--primary" href="/admin/vehicles">Open Vehicle Manager</a>
+    <a class="button button--primary" href="/owner/vehicles">Open Vehicle Manager</a>
   </article>
 
   <article class="detail-card">
@@ -39,3 +68,24 @@
     </article>
   <% } %>
 </section>
+
+<% if (isOwner && users) { %>
+<section class="section-heading">
+  <h2>User Accounts</h2>
+</section>
+
+<% if (!users.length) { %>
+  <p>No users found.</p>
+<% } else { %>
+  <div class="review-list">
+    <% users.forEach((user) => { %>
+      <article class="review-card">
+        <h3><%= user.first_name %> <%= user.last_name %></h3>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        <p><strong>Role:</strong> <%= user.role %></p>
+        <p><strong>Joined:</strong> <%= new Date(user.created_at).toLocaleDateString() %></p>
+      </article>
+    <% }) %>
+  </div>
+<% } %>
+<% } %>

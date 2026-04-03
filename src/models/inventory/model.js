@@ -56,21 +56,13 @@ async function getVehicleBySlug(slug) {
 }
 
 async function getVehicleById(vehicleId) {
-  try {
-    const sql = `
-      SELECT v.*, i.image_path
-      FROM vehicles v
-      LEFT JOIN vehicle_images i
-        ON v.vehicle_id = i.vehicle_id
-        AND i.is_primary = true
-      WHERE v.vehicle_id = $1;
-    `;
-    const result = await db.query(sql, [vehicleId]);
-    return result.rows[0];
-  } catch (error) {
-    console.error("getVehicleById error:", error);
-    throw error;
-  }
+  const sql = `
+    SELECT *
+    FROM vehicles
+    WHERE vehicle_id = $1;
+  `;
+  const result = await db.query(sql, [vehicleId]);
+  return result.rows[0];
 }
 
 async function updateVehicleDetails({ vehicle_id, price, description, availability }) {
@@ -161,11 +153,124 @@ async function deleteCategory(categoryId) {
   await db.query(sql, [categoryId]);
 }
 
+async function createVehicle({
+  category_id,
+  year,
+  make,
+  model,
+  slug,
+  price,
+  mileage,
+  transmission,
+  fuel_type,
+  description,
+  availability,
+  featured,
+}) {
+  const sql = `
+    INSERT INTO vehicles (
+      category_id,
+      year,
+      make,
+      model,
+      slug,
+      price,
+      mileage,
+      transmission,
+      fuel_type,
+      description,
+      availability,
+      featured
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+    RETURNING *;
+  `;
+
+  const result = await db.query(sql, [
+    category_id,
+    year,
+    make,
+    model,
+    slug,
+    price,
+    mileage,
+    transmission,
+    fuel_type,
+    description,
+    availability,
+    featured,
+  ]);
+
+  return result.rows[0];
+}
+
+async function updateVehicle(vehicleId, {
+  category_id,
+  year,
+  make,
+  model,
+  slug,
+  price,
+  mileage,
+  transmission,
+  fuel_type,
+  description,
+  availability,
+  featured,
+}) {
+  const sql = `
+    UPDATE vehicles
+    SET category_id = $1,
+        year = $2,
+        make = $3,
+        model = $4,
+        slug = $5,
+        price = $6,
+        mileage = $7,
+        transmission = $8,
+        fuel_type = $9,
+        description = $10,
+        availability = $11,
+        featured = $12
+    WHERE vehicle_id = $13
+    RETURNING *;
+  `;
+
+  const result = await db.query(sql, [
+    category_id,
+    year,
+    make,
+    model,
+    slug,
+    price,
+    mileage,
+    transmission,
+    fuel_type,
+    description,
+    availability,
+    featured,
+    vehicleId,
+  ]);
+
+  return result.rows[0];
+}
+
+async function deleteVehicle(vehicleId) {
+  const sql = `
+    DELETE FROM vehicles
+    WHERE vehicle_id = $1;
+  `;
+  await db.query(sql, [vehicleId]);
+}
+
 export default {
   getFeaturedVehicles,
   getAllVehicles,
   getVehicleBySlug,
   getVehicleById,
+  createVehicle,
+  updateVehicle,
+  deleteVehicle,
   updateVehicleDetails,
   getAllCategories,
   getVehiclesByCategoryId,
