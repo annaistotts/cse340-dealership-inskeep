@@ -4,8 +4,11 @@ import reviewModel from '../../models/reviews/model.js';
 import contactModel from '../../models/contact/model.js';
 
 export function buildAdminDashboard(req, res) {
+  const isOwner = req.session?.user?.role === 'owner';
+
   res.render('admin/dashboard', {
-    title: 'Employee Dashboard',
+    title: isOwner ? 'Owner Dashboard' : 'Employee Dashboard',
+    isOwner,
   });
 }
 
@@ -132,6 +135,76 @@ export async function buildContactDashboard(req, res, next) {
       title: 'Contact Submissions',
       messages,
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function buildCategoryDashboard(req, res, next) {
+  try {
+    const categories = await inventoryModel.getAllCategories();
+
+    res.render('admin/category-list', {
+      title: 'Manage Categories',
+      categories,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export function buildAddCategory(req, res) {
+  res.render('admin/category-form', {
+    title: 'Add Category',
+    category: null,
+  });
+}
+
+export async function addCategory(req, res, next) {
+  try {
+    const { category_name } = req.body;
+
+    await inventoryModel.createCategory(category_name);
+
+    res.redirect('/owner/categories');
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function buildEditCategory(req, res, next) {
+  try {
+    const category = await inventoryModel.getCategoryById(req.params.categoryId);
+
+    if (!category) {
+      return res.status(404).send('Category not found');
+    }
+
+    res.render('admin/category-form', {
+      title: 'Edit Category',
+      category,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function editCategory(req, res, next) {
+  try {
+    const { category_name } = req.body;
+
+    await inventoryModel.updateCategory(req.params.categoryId, category_name);
+
+    res.redirect('/owner/categories');
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function removeCategory(req, res, next) {
+  try {
+    await inventoryModel.deleteCategory(req.params.categoryId);
+    res.redirect('/owner/categories');
   } catch (error) {
     next(error);
   }

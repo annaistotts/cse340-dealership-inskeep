@@ -129,6 +129,38 @@ async function getCategoryById(categoryId) {
   return result.rows[0];
 }
 
+async function createCategory(categoryName) {
+  const sql = `
+    INSERT INTO categories (category_name)
+    VALUES ($1)
+    RETURNING *;
+  `;
+
+  const result = await db.query(sql, [categoryName]);
+  return result.rows[0];
+}
+
+async function updateCategory(categoryId, categoryName) {
+  const sql = `
+    UPDATE categories
+    SET category_name = $1
+    WHERE category_id = $2
+    RETURNING *;
+  `;
+
+  const result = await db.query(sql, [categoryName, categoryId]);
+  return result.rows[0];
+}
+
+async function deleteCategory(categoryId) {
+  const sql = `
+    DELETE FROM categories
+    WHERE category_id = $1;
+  `;
+
+  await db.query(sql, [categoryId]);
+}
+
 export default {
   getFeaturedVehicles,
   getAllVehicles,
@@ -138,4 +170,7 @@ export default {
   getAllCategories,
   getVehiclesByCategoryId,
   getCategoryById,
+  createCategory,
+  updateCategory,
+  deleteCategory,
 };

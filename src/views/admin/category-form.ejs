@@ -1,0 +1,24 @@
+<section class="auth-page">
+  <h1><%= category ? 'Edit Category' : 'Add Category' %></h1>
+
+  <form
+    action="<%= category ? `/owner/categories/${category.category_id}/edit` : '/owner/categories/add' %>"
+    method="post"
+    class="auth-form"
+  >
+    <div>
+      <label for="category_name">Category Name</label>
+      <input
+        type="text"
+        id="category_name"
+        name="category_name"
+        value="<%= category ? category.category_name : '' %>"
+        required
+      />
+    </div>
+
+    <button type="submit">
+      <%= category ? 'Save Changes' : 'Add Category' %>
+    </button>
+  </form>
+</section>

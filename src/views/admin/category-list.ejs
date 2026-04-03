@@ -1,0 +1,24 @@
+<section class="section-heading admin-service-heading">
+  <h1>Manage Categories</h1>
+  <a class="button button--primary" href="/owner/categories/add">Add Category</a>
+</section>
+
+<% if (!categories.length) { %>
+  <p>No categories found.</p>
+<% } else { %>
+  <div class="review-list">
+    <% categories.forEach(category => { %>
+      <article class="review-card">
+        <h3><%= category.category_name %></h3>
+
+        <div class="hero__actions">
+          <a class="button button--secondary" href="/owner/categories/<%= category.category_id %>/edit">Edit</a>
+
+          <form action="/owner/categories/<%= category.category_id %>/delete" method="post">
+            <button type="submit">Delete</button>
+          </form>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+<% } %>

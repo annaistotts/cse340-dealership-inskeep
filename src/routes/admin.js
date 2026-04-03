@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { requireEmployee } from '../middleware/auth.js';
+import { requireEmployee, requireOwner } from '../middleware/auth.js';
 import {
   buildAdminDashboard,
   buildVehicleManagement,
@@ -11,6 +11,12 @@ import {
   buildServiceDetail,
   updateServiceRequest,
   buildContactDashboard,
+  buildCategoryDashboard,
+  buildAddCategory,
+  addCategory,
+  buildEditCategory,
+  editCategory,
+  removeCategory,
 } from '../controllers/admin/controller.js';
 
 const router = Router();
@@ -28,5 +34,11 @@ router.get('/admin/service', requireEmployee, buildServiceDashboard);
 router.get('/admin/service/:requestId', requireEmployee, buildServiceDetail);
 router.post('/admin/service/:requestId', requireEmployee, updateServiceRequest);
 router.get('/admin/contact', requireEmployee, buildContactDashboard);
+router.get('/owner/categories', requireOwner, buildCategoryDashboard);
+router.get('/owner/categories/add', requireOwner, buildAddCategory);
+router.post('/owner/categories/add', requireOwner, addCategory);
+router.get('/owner/categories/:categoryId/edit', requireOwner, buildEditCategory);
+router.post('/owner/categories/:categoryId/edit', requireOwner, editCategory);
+router.post('/owner/categories/:categoryId/delete', requireOwner, removeCategory);
 
 export default router;
