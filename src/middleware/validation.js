@@ -223,3 +223,14 @@ export function validateServiceAdminUpdate(req, res, next) {
 	req.body.employee_notes = employee_notes;
 	return next();
 }
+
+export function validateRoleUpdate(req, res, next) {
+	const role = sanitizeText(req.body.role).toLowerCase();
+
+	if (!['customer', 'employee'].includes(role)) {
+		return sendValidationError(res, 'Invalid role.');
+	}
+
+	req.body.role = role;
+	return next();
+}

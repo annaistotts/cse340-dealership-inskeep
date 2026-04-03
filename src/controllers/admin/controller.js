@@ -33,6 +33,26 @@ export async function buildOwnerDashboard(req, res, next) {
   }
 }
 
+export async function updateUserRole(req, res, next) {
+  try {
+    const { role } = req.body;
+    const userId = Number.parseInt(req.params.userId, 10);
+
+    if (!Number.isInteger(userId)) {
+      return res.status(400).send('Invalid user id.');
+    }
+
+    if (!['customer', 'employee'].includes(role)) {
+      return res.status(400).send('Invalid role.');
+    }
+
+    await adminModel.updateUserRole(userId, role);
+    res.redirect('/owner');
+  } catch (error) {
+    next(error);
+  }
+}
+
 function makeSlug(year, make, model) {
   return `${year}-${make}-${model}`
     .toLowerCase()

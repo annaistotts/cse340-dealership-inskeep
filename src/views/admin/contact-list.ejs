@@ -13,6 +13,7 @@
         <p><strong>Subject:</strong> <%= message.subject || 'No subject' %></p>
         <p><strong>Message:</strong> <%= message.message %></p>
         <p><strong>Submitted:</strong> <%= new Date(message.created_at).toLocaleString() %></p>
+        <a class="button button--primary" href="mailto:<%= message.email %>?subject=<%= encodeURIComponent(`Re: ${message.subject || 'Your message to Driven Dealership'}`) %>">Respond</a>
       </article>
     <% }) %>
   </div>

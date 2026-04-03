@@ -25,7 +25,20 @@ async function getAllUsers() {
   return result.rows;
 }
 
+async function updateUserRole(userId, role) {
+  const sql = `
+    UPDATE users
+    SET role = $1
+    WHERE user_id = $2
+    RETURNING user_id, first_name, last_name, email, role, created_at;
+  `;
+
+  const result = await db.query(sql, [role, userId]);
+  return result.rows[0];
+}
+
 export default {
   getDashboardCounts,
   getAllUsers,
+  updateUserRole,
 };

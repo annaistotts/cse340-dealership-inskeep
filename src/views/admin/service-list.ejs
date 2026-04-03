@@ -13,7 +13,7 @@
         <p><strong>Email:</strong> <%= request.email %></p>
         <p><strong>Service:</strong> <%= request.service_type %></p>
         <p><strong>Status:</strong> <%= request.status %></p>
-        <a href="/admin/service/<%= request.request_id %>">Open Request</a>
+        <a class="button button--primary" href="/admin/service/<%= request.request_id %>">Open Request</a>
       </article>
     <% }) %>
   </div>

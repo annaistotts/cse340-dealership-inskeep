@@ -3,6 +3,7 @@ import { requireEmployee, requireOwner } from '../middleware/auth.js';
 import {
   validateCategory,
   validateOwnerVehicle,
+  validateRoleUpdate,
   validateServiceAdminUpdate,
   validateVehicleDetails,
 } from '../middleware/validation.js';
@@ -30,6 +31,7 @@ import {
   editVehicle,
   removeVehicle,
   buildOwnerDashboard,
+  updateUserRole,
 } from '../controllers/admin/controller.js';
 
 const router = Router();
@@ -48,6 +50,8 @@ router.get('/admin/service/:requestId', requireEmployee, buildServiceDetail);
 router.post('/admin/service/:requestId', requireEmployee, validateServiceAdminUpdate, updateServiceRequest);
 router.get('/admin/contact', requireEmployee, buildContactDashboard);
 router.get('/owner', requireOwner, buildOwnerDashboard);
+router.get('/owner/contact', requireOwner, buildContactDashboard);
+router.post('/owner/users/:userId/role', requireOwner, validateRoleUpdate, updateUserRole);
 router.get('/owner/categories', requireOwner, buildCategoryDashboard);
 router.get('/owner/categories/add', requireOwner, buildAddCategory);
 router.post('/owner/categories/add', requireOwner, validateCategory, addCategory);

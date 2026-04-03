@@ -66,6 +66,12 @@
       <p>Create, edit, and remove inventory categories.</p>
       <a class="button button--primary" href="/owner/categories">Open Categories</a>
     </article>
+
+    <article class="detail-card">
+      <h2>Contact Submissions</h2>
+      <p>View customer messages and respond directly by email.</p>
+      <a class="button button--primary" href="/owner/contact">Open Contact Inbox</a>
+    </article>
   <% } %>
 </section>
 
@@ -84,6 +90,15 @@
         <p><strong>Email:</strong> <%= user.email %></p>
         <p><strong>Role:</strong> <%= user.role %></p>
         <p><strong>Joined:</strong> <%= new Date(user.created_at).toLocaleDateString() %></p>
+        <% if (user.role !== 'owner') { %>
+          <form class="review-actions" action="/owner/users/<%= user.user_id %>/role" method="post">
+            <select name="role" aria-label="Update role for <%= user.email %>">
+              <option value="customer" <%= user.role === 'customer' ? 'selected' : '' %>>Customer</option>
+              <option value="employee" <%= user.role === 'employee' ? 'selected' : '' %>>Employee</option>
+            </select>
+            <button class="review-action-button" type="submit">Update Role</button>
+          </form>
+        <% } %>
       </article>
     <% }) %>
   </div>
