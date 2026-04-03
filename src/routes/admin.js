@@ -1,6 +1,12 @@
 import { Router } from 'express';
 import { requireEmployee, requireOwner } from '../middleware/auth.js';
 import {
+  validateCategory,
+  validateOwnerVehicle,
+  validateServiceAdminUpdate,
+  validateVehicleDetails,
+} from '../middleware/validation.js';
+import {
   buildAdminDashboard,
   buildVehicleManagement,
   buildVehicleEdit,
@@ -34,25 +40,25 @@ router.get('/admin', requireEmployee, (req, res) => {
 router.get('/admin/dashboard', requireEmployee, buildAdminDashboard);
 router.get('/admin/vehicles', requireEmployee, buildVehicleManagement);
 router.get('/admin/vehicles/:vehicleId/edit', requireEmployee, buildVehicleEdit);
-router.post('/admin/vehicles/:vehicleId/edit', requireEmployee, updateVehicleDetails);
+router.post('/admin/vehicles/:vehicleId/edit', requireEmployee, validateVehicleDetails, updateVehicleDetails);
 router.get('/admin/reviews', requireEmployee, buildReviewModeration);
 router.post('/admin/reviews/:reviewId/delete', requireEmployee, deleteReviewModeration);
 router.get('/admin/service', requireEmployee, buildServiceDashboard);
 router.get('/admin/service/:requestId', requireEmployee, buildServiceDetail);
-router.post('/admin/service/:requestId', requireEmployee, updateServiceRequest);
+router.post('/admin/service/:requestId', requireEmployee, validateServiceAdminUpdate, updateServiceRequest);
 router.get('/admin/contact', requireEmployee, buildContactDashboard);
 router.get('/owner', requireOwner, buildOwnerDashboard);
 router.get('/owner/categories', requireOwner, buildCategoryDashboard);
 router.get('/owner/categories/add', requireOwner, buildAddCategory);
-router.post('/owner/categories/add', requireOwner, addCategory);
+router.post('/owner/categories/add', requireOwner, validateCategory, addCategory);
 router.get('/owner/categories/:categoryId/edit', requireOwner, buildEditCategory);
-router.post('/owner/categories/:categoryId/edit', requireOwner, editCategory);
+router.post('/owner/categories/:categoryId/edit', requireOwner, validateCategory, editCategory);
 router.post('/owner/categories/:categoryId/delete', requireOwner, removeCategory);
 router.get('/owner/vehicles', requireOwner, buildVehicleDashboard);
 router.get('/owner/vehicles/add', requireOwner, buildAddVehicle);
-router.post('/owner/vehicles/add', requireOwner, addVehicle);
+router.post('/owner/vehicles/add', requireOwner, validateOwnerVehicle, addVehicle);
 router.get('/owner/vehicles/:vehicleId/edit', requireOwner, buildEditVehicle);
-router.post('/owner/vehicles/:vehicleId/edit', requireOwner, editVehicle);
+router.post('/owner/vehicles/:vehicleId/edit', requireOwner, validateOwnerVehicle, editVehicle);
 router.post('/owner/vehicles/:vehicleId/delete', requireOwner, removeVehicle);
 
 export default router;

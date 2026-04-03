@@ -19,11 +19,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
+const isProduction = NODE_ENV === 'production';
+
+if (!process.env.SESSION_SECRET) {
+  throw new Error('SESSION_SECRET is not set. Add it to your .env file.');
+}
 
 /**
  * Setup Express server
  */
 const app = express();
+
+if (isProduction) {
+  app.set('trust proxy', 1);
+}
 
 /**
  * Configure Express
@@ -48,11 +57,13 @@ app.use(
       pool: db,
       tableName: 'session',
     }),
-    secret: process.env.SESSION_SECRET || 'supersecret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
+      secure: isProduction,
+      httpOnly: true,
+      sameSite: 'lax',
       maxAge: 1000 * 60 * 60, // 1 hour
     },
   })
