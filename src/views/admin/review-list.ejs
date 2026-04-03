@@ -1,0 +1,26 @@
+<section class="section-heading admin-service-heading">
+  <h1>Moderate Reviews</h1>
+</section>
+
+<% if (!reviews.length) { %>
+  <p>No reviews found.</p>
+<% } else { %>
+  <div class="review-list">
+    <% reviews.forEach((review) => { %>
+      <article class="review-card">
+        <h3><%= review.year %> <%= review.make %> <%= review.model %></h3>
+        <p><strong>Reviewer:</strong> <%= review.first_name %> <%= review.last_name %></p>
+        <p><strong>Rating:</strong> <%= review.rating %>/5</p>
+        <p><strong>Review:</strong> <%= review.review_text %></p>
+        <p><strong>Created:</strong> <%= new Date(review.created_at).toLocaleDateString() %></p>
+
+        <div class="review-actions">
+          <a class="review-action-button" href="/vehicles/<%= review.slug %>">View Vehicle</a>
+          <form action="/admin/reviews/<%= review.review_id %>/delete" method="post">
+            <button class="review-action-button" type="submit">Delete Review</button>
+          </form>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+<% } %>

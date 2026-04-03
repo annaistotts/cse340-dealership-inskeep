@@ -7,13 +7,18 @@
 
     <nav class="site-nav" aria-label="Primary">
       <a class="<%= currentPath === '/' ? 'is-active' : '' %>" href="/">Home</a>
-      <a class="<%= currentPath.startsWith('/vehicles') ? 'is-active' : '' %>" href="/vehicles">Inventory</a>
-      <% if (currentUser) { %>
-        <a class="<%= currentPath === '/service' ? 'is-active' : '' %>" href="/service">Service</a>
-        <a class="<%= currentPath.startsWith('/service/history') ? 'is-active' : '' %>" href="/service/history">My Service Requests</a>
+      <% if (currentUser && (currentUser.role === 'employee' || currentUser.role === 'owner')) { %>
+        <a class="<%= currentPath.startsWith('/admin/dashboard') ? 'is-active' : '' %>" href="/admin/dashboard">Dashboard</a>
         <a href="/logout">Logout</a>
       <% } else { %>
-        <a class="<%= currentPath === '/login' ? 'is-active' : '' %>" href="/login">Sign in</a>
+        <a class="<%= currentPath.startsWith('/vehicles') ? 'is-active' : '' %>" href="/vehicles">Inventory</a>
+        <% if (currentUser) { %>
+          <a class="<%= currentPath === '/service' ? 'is-active' : '' %>" href="/service">Service</a>
+          <a class="<%= currentPath.startsWith('/service/history') ? 'is-active' : '' %>" href="/service/history">My Service Requests</a>
+          <a href="/logout">Logout</a>
+        <% } else { %>
+          <a class="<%= currentPath === '/login' ? 'is-active' : '' %>" href="/login">Sign in</a>
+        <% } %>
       <% } %>
     </nav>
   </header>

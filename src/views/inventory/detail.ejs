@@ -10,7 +10,9 @@
 <% } else { %>
 	<section class="detail-hero">
 		<div class="detail-hero__content">
-			<p class="eyebrow"><%= vehicle.availability %></p>
+			<span class="availability-badge availability-badge--<%= vehicle.availability ? vehicle.availability.toLowerCase() : 'unknown' %>">
+				<%= vehicle.availability ? vehicle.availability.charAt(0).toUpperCase() + vehicle.availability.slice(1).toLowerCase() : 'Unknown' %>
+			</span>
 			<h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
 			<p><%= vehicle.description %></p>
 
@@ -60,7 +62,9 @@
 				<li><strong>Transmission:</strong> <%= vehicle.transmission %></li>
 				<li><strong>Fuel Type:</strong> <%= vehicle.fuel_type %></li>
 				<li><strong>Mileage:</strong> <%= Number(vehicle.mileage).toLocaleString() %> miles</li>
-				<li><strong>Status:</strong> <%= vehicle.availability %></li>
+				<li><strong>Status:</strong> <span class="availability-badge availability-badge--<%= vehicle.availability ? vehicle.availability.toLowerCase() : 'unknown' %>">
+					<%= vehicle.availability ? vehicle.availability.charAt(0).toUpperCase() + vehicle.availability.slice(1).toLowerCase() : 'Unknown' %>
+				</span></li>
 			</ul>
 		</article>
 	</section>

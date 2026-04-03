@@ -1,0 +1,30 @@
+<section class="section-heading admin-service-heading">
+  <h1>Edit Vehicle</h1>
+</section>
+
+<article class="review-card">
+  <h2><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h2>
+
+  <form action="/admin/vehicles/<%= vehicle.vehicle_id %>/edit" method="post" class="auth-form">
+    <div>
+      <label for="price">Price</label>
+      <input id="price" name="price" type="number" min="0" step="1" value="<%= vehicle.price %>" required>
+    </div>
+
+    <div>
+      <label for="availability">Availability</label>
+      <select id="availability" name="availability" required>
+        <option value="Available" <%= vehicle.availability?.toLowerCase() === 'available' ? 'selected' : '' %>>Available</option>
+        <option value="Pending" <%= vehicle.availability?.toLowerCase() === 'pending' ? 'selected' : '' %>>Pending</option>
+        <option value="Sold" <%= vehicle.availability?.toLowerCase() === 'sold' ? 'selected' : '' %>>Sold</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="6" required><%= vehicle.description %></textarea>
+    </div>
+
+    <button type="submit">Save Vehicle</button>
+  </form>
+</article>

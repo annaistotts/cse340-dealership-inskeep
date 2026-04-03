@@ -288,6 +288,10 @@ img {
 	margin-bottom: 1.25rem;
 }
 
+.admin-service-heading {
+	margin-bottom: 1.25rem;
+}
+
 .section-heading--stacked {
 	align-items: start;
 	flex-direction: column;
@@ -312,6 +316,12 @@ img {
 	font-weight: 800;
 	font-size: 1.25rem;
 	letter-spacing: -0.03em;
+}
+
+.vehicle-card__media--photo {
+	background-image: linear-gradient(rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.55)), var(--card-bg);
+	background-size: cover;
+	background-position: center;
 }
 
 .theme-blue {
@@ -746,4 +756,35 @@ img {
 	.vehicle-reviews {
 		padding: 1.4rem;
 	}
+}
+
+
+.availability-badge {
+  display: inline-block;
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.availability-badge--available {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.availability-badge--pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.availability-badge--sold {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.availability-badge--unknown {
+  background-color: #e5e7eb;
+  color: #374151;
 }

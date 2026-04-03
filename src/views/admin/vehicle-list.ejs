@@ -1,0 +1,19 @@
+<section class="section-heading admin-service-heading">
+  <h1>Manage Vehicles</h1>
+</section>
+
+<% if (!vehicles.length) { %>
+  <p>No vehicles found.</p>
+<% } else { %>
+  <div class="review-list">
+    <% vehicles.forEach((vehicle) => { %>
+      <article class="review-card">
+        <h3><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h3>
+        <p><strong>Price:</strong> $<%= Number(vehicle.price).toLocaleString() %></p>
+        <p><strong>Availability:</strong> <%= vehicle.availability ? vehicle.availability.charAt(0).toUpperCase() + vehicle.availability.slice(1).toLowerCase() : '' %></p>
+        <p><strong>Description:</strong> <%= vehicle.description %></p>
+        <a class="review-action-button" href="/admin/vehicles/<%= vehicle.vehicle_id %>/edit">Edit Details</a>
+      </article>
+    <% }) %>
+  </div>
+<% } %>

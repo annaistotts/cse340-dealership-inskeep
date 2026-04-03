@@ -53,10 +53,30 @@ async function deleteReview(reviewId) {
   await db.query(sql, [reviewId]);
 }
 
+async function getAllReviewsForModeration() {
+  const sql = `
+    SELECT
+      r.*,
+      u.first_name,
+      u.last_name,
+      v.year,
+      v.make,
+      v.model,
+      v.slug
+    FROM reviews r
+    JOIN users u ON r.user_id = u.user_id
+    JOIN vehicles v ON r.vehicle_id = v.vehicle_id
+    ORDER BY r.created_at DESC;
+  `;
+  const result = await db.query(sql);
+  return result.rows;
+}
+
 export default {
   createReview,
   getReviewsByVehicleId,
   getReviewById,
   updateReview,
   deleteReview,
+  getAllReviewsForModeration,
 };

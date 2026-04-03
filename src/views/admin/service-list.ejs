@@ -1,0 +1,20 @@
+<section class="section-heading admin-service-heading">
+  <h1>Manage Service Requests</h1>
+</section>
+
+<% if (!requests.length) { %>
+  <p>No service requests found.</p>
+<% } else { %>
+  <div class="review-list">
+    <% requests.forEach(request => { %>
+      <article class="review-card">
+        <h3><%= request.vehicle_year %> <%= request.vehicle_make %> <%= request.vehicle_model %></h3>
+        <p><strong>Customer:</strong> <%= request.first_name %> <%= request.last_name %></p>
+        <p><strong>Email:</strong> <%= request.email %></p>
+        <p><strong>Service:</strong> <%= request.service_type %></p>
+        <p><strong>Status:</strong> <%= request.status %></p>
+        <a href="/admin/service/<%= request.request_id %>">Open Request</a>
+      </article>
+    <% }) %>
+  </div>
+<% } %>
