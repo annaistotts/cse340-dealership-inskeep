@@ -48,7 +48,7 @@ app.use(
       pool: db,
       tableName: 'session',
     }),
-    secret: 'supersecret', // later move to .env
+    secret: process.env.SESSION_SECRET || 'supersecret',
     resave: false,
     saveUninitialized: false,
     cookie: {

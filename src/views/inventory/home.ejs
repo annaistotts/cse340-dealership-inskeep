@@ -48,7 +48,7 @@
 	<% featuredVehicles.forEach((vehicle) => { %>
 		<article class="vehicle-card">
 			<div
-				class="vehicle-card__media <%= vehicle.image_path ? 'vehicle-card__media--photo' : vehicle.themeClass %>"
+				class="vehicle-card__media <%= vehicle.image_path ? 'vehicle-card__media--photo' : 'theme-blue' %>"
 				<% if (vehicle.image_path) { %>
 					style="--card-bg: url('<%= vehicle.image_path %>')"
 				<% } %>
@@ -58,12 +58,12 @@
 
 			<div class="vehicle-card__body">
 				<div class="vehicle-card__meta">
-					<span class="pill"><%= vehicle.tag %></span>
-					<span><%= vehicle.type %></span>
+					<span class="pill"><%= vehicle.fuel_type %></span>
+					<span><%= vehicle.transmission %></span>
 				</div>
 
 				<h3><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h3>
-				<p><%= vehicle.highlight %></p>
+				<p><%= vehicle.description %></p>
 
 				<dl class="vehicle-card__specs">
 					<div>
@@ -72,7 +72,7 @@
 					</div>
 					<div>
 						<dt>Mileage</dt>
-						<dd><%= vehicle.mileage %></dd>
+						<dd><%= Number(vehicle.mileage).toLocaleString() %> mi</dd>
 					</div>
 					<div>
 						<dt>Fuel</dt>
