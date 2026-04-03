@@ -9,7 +9,12 @@
 <section class="vehicle-grid">
 	<% vehicles.forEach((vehicle) => { %>
 		<article class="vehicle-card">
-			<div class="vehicle-card__media <%= vehicle.themeClass %>">
+			<div
+				class="vehicle-card__media <%= vehicle.image_path ? '' : vehicle.themeClass %>"
+				<% if (vehicle.image_path) { %>
+					style="background-image: linear-gradient(rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.55)), url('<%= vehicle.image_path %>'); background-size: cover; background-position: center;"
+				<% } %>
+			>
 				<span><%= vehicle.year %> <%= vehicle.make %></span>
 			</div>
 

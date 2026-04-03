@@ -77,11 +77,13 @@
 						<p><%= review.review_text %></p>
 
 						<% if (currentUser && currentUser.user_id === review.user_id) { %>
-							<a href="/vehicles/<%= vehicle.slug %>/reviews/<%= review.review_id %>/edit">Edit</a>
+							<div class="review-actions">
+								<a class="review-action-button" href="/vehicles/<%= vehicle.slug %>/reviews/<%= review.review_id %>/edit">Edit</a>
 
-							<form action="/vehicles/<%= vehicle.slug %>/reviews/<%= review.review_id %>/delete" method="post">
-								<button type="submit">Delete</button>
-							</form>
+								<form action="/vehicles/<%= vehicle.slug %>/reviews/<%= review.review_id %>/delete" method="post">
+									<button class="review-action-button" type="submit">Delete</button>
+								</form>
+							</div>
 						<% } %>
 					</article>
 				<% }) %>
